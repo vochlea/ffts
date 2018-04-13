@@ -22,6 +22,16 @@ set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include/ffts)
 set(LIB_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/lib)
 
 # common options
+
+# !!!! FOR TESTING ONLY !!!!
+option(ENABLE_AVX
+  "Enables AVX instructions." OFF
+)
+# !!!! FOR TESTING ONLY !!!!
+option(ENABLE_DOUBLE
+  "Enables double precision" OFF
+)
+
 option(ENABLE_NEON
   "Enables the use of NEON instructions." OFF
 )
@@ -307,6 +317,14 @@ if(NOT CMAKE_CROSSCOMPILING)
     if(HAVE_XMMINTRIN_H)
       add_definitions(-DHAVE_SSE)
       set(CMAKE_REQUIRED_FLAGS_SAVE ${CMAKE_REQUIRED_FLAGS})
+
+      # TODO: not the right place
+      if(ENABLE_AVX)
+        add_definitions(-DHAVE_AVX)
+      endif(ENABLE_AVX)
+      if(ENABLE_DOUBLE)
+        add_definitions(-DFFTS_DOUBLE)
+      endif(ENABLE_DOUBLE)
     endif(HAVE_XMMINTRIN_H)
 
     # enable SSE2 code generation
@@ -458,6 +476,7 @@ elseif(HAVE_XMMINTRIN_H)
   add_definitions(-DHAVE_SSE)
 
   list(APPEND FFTS_SOURCES
+    src/macros-avx.h
     src/macros-sse.h
   )
 
