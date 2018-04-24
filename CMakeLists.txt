@@ -109,15 +109,10 @@ if(HAVE_UNISTD_H)
 endif(HAVE_UNISTD_H)
 
 # check existence of various declarations
-check_symbol_exists(aligned_alloc  stdlib.h HAVE_DECL_ALIGNED_ALLOC)
 check_symbol_exists(memalign       malloc.h HAVE_DECL_MEMALIGN)
 check_symbol_exists(posix_memalign stdlib.h HAVE_DECL_POSIX_MEMALIGN)
 check_symbol_exists(valloc         stdlib.h HAVE_DECL_VALLOC)
 check_symbol_exists(_mm_malloc     malloc.h HAVE_DECL__MM_MALLOC)
-
-if(HAVE_DECL_ALIGNED_ALLOC)
-  add_definitions(-DHAVE_DECL_ALIGNED_ALLOC)
-endif(HAVE_DECL_ALIGNED_ALLOC)
 
 if(HAVE_DECL_MEMALIGN)
   add_definitions(-DHAVE_DECL_MEMALIGN)
@@ -136,15 +131,10 @@ if(HAVE_DECL__MM_MALLOC)
 endif(HAVE_DECL__MM_MALLOC)
 
 # check existence of various functions
-check_function_exists(aligned_alloc  HAVE_ALIGNED_ALLOC)
 check_function_exists(memalign       HAVE_MEMALIGN)
 check_function_exists(posix_memalign HAVE_POSIX_MEMALIGN)
 check_function_exists(valloc         HAVE_VALLOC)
 check_function_exists(_mm_malloc     HAVE__MM_MALLOC)
-
-if(HAVE_ALIGNED_ALLOC)
-  add_definitions(-DHAVE_ALIGNED_ALLOC)
-endif(HAVE_ALIGNED_ALLOC)
 
 if(HAVE_MEMALIGN)
   add_definitions(-DHAVE_MEMALIGN)
