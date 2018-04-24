@@ -55,12 +55,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <stddef.h>
 
-#ifdef HAVE_STDINT_H
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#elif HAVE_STDINT_H
 #include <stdint.h>
+#elif _MSC_VER
+typedef __int32 int32_t;
+typedef __int64 int64_t;
+typedef unsigned __int32 uint32_t;
+typedef unsigned __int64 uint64_t;
+#else
+typedef signed long int	int32_t;
+typedef unsigned long int uint32_t;
+typedef signed long long int int64_t; 
+typedef unsigned long long int uint64_t;
 #endif
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
 #endif
 
 #include <stdio.h>

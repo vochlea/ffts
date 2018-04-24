@@ -67,6 +67,7 @@ include(CheckSymbolExists)
 add_definitions(-DFFTS_BUILD)
 
 # check existence of various headers
+check_include_file(inttypes.h  HAVE_INTTYPES_H)
 check_include_file(malloc.h    HAVE_MALLOC_H)
 check_include_file(mm_malloc.h HAVE_MM_MALLOC_H)
 check_include_file(stdint.h    HAVE_STDINT_H)
@@ -74,6 +75,10 @@ check_include_file(stdlib.h    HAVE_STDLIB_H)
 check_include_file(string.h    HAVE_STRING_H)
 check_include_file(sys/mman.h  HAVE_SYS_MMAN_H)
 check_include_file(unistd.h    HAVE_UNISTD_H)
+
+if(HAVE_INTTYPES_H)
+  add_definitions(-DHAVE_INTTYPES_H)
+endif(HAVE_INTTYPES_H)
 
 if(HAVE_MALLOC_H)
   add_definitions(-DHAVE_MALLOC_H)
@@ -536,6 +541,41 @@ if(ENABLE_STATIC)
 endif(ENABLE_STATIC)
 
 if(ENABLE_STATIC OR ENABLE_SHARED)
+  find_path(MPFR_INCLUDES
+    NAMES mpfr.h
+    PATHS ${INCLUDE_INSTALL_DIR}
+  )
+  find_library(MPFR_LIBRARIES mpfr PATHS ${LIB_INSTALL_DIR})
+  find_package(OpenMP)
+
+  if(MPFR_INCLUDES)
+    add_definitions(-DHAVE_MPFR_H)
+    include_directories(${MPFR_INCLUDES})
+  endif(MPFR_INCLUDES)
+
+  add_executable(ffts_trig_test
+    tests/trig_test.c
+  )
+
+  target_link_libraries(ffts_trig_test ffts)
+  if(MPFR_LIBRARIES)
+    target_link_libraries(ffts_trig_test ${MPFR_LIBRARIES})
+  endif(MPFR_LIBRARIES)
+
+  if(OPENMP_FOUND)
+    if(MSVC)
+      set_target_properties(ffts_trig_test PROPERTIES
+        COMPILE_FLAGS "${OpenMP_C_FLAGS}"
+        LINK_FLAGS "${OpenMP_EXE_LINKER_FLAGS}"
+      )
+    else()
+      set_target_properties(ffts_trig_test PROPERTIES
+        COMPILE_FLAGS "${OpenMP_C_FLAGS}"
+        LINK_FLAGS "${OpenMP_C_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}"
+      )
+    endif(MSVC)
+  endif(OPENMP_FOUND)
+
   add_executable(ffts_test
     tests/test.c
   )
