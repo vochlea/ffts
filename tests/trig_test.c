@@ -153,7 +153,11 @@ static int test_float(int i)
 #endif
         for (j = 1; j <= len/2; j++) {
             float c, s;
+#ifdef _OPENMP
             int tid = omp_get_thread_num();
+#else
+            int tid = 0;
+#endif
             if (mismatch)
                 continue;
             mpfr_mul_si(rop[tid], pi, -j, MPFR_RNDN);
@@ -237,7 +241,11 @@ static int test_double(int i)
 #endif
         for (j = 1; j <= len/2; j++) {
             double c, s;
+#ifdef _OPENMP
             int tid = omp_get_thread_num();
+#else
+            int tid = 0;
+#endif
             if (mismatch)
                 continue;
             mpfr_mul_si(rop[tid], pi, -j, MPFR_RNDN);
