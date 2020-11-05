@@ -1,4 +1,4 @@
-Just some notes on how the ffts static libs were generated
+Some notes on how the ffts static libs were generated for iOS
 
 cd the_code/dublermobile/src/core/3rdparty/ffts/build
 cmake .. -GXcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES=arm64
