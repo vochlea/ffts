@@ -80,6 +80,7 @@ ffts_free_1d_real(ffts_plan_t *p)
     free(p);
 }
 
+#undef __ARM_NEON__
 #ifdef __ARM_NEON__
 static void
 ffts_execute_1d_real_neon(ffts_plan_t *p, const void *input, void *output)
