@@ -7,6 +7,7 @@ Open Xcode project
 Select the static lib as build project
 Select iPhone as build target (generic iOS device)
 Menu - Product - Scheme - edit Scheme - set build config to debug
+Add -fembed-bitcode to "Other C Flags" in Build Settings (for App Store)
 Menu - Product - Build (should output libffts.a to a folder)
 Switch to release and repeat.
 (had to previously #undef __ARM_NEON__ in ffts source to get this to build)
